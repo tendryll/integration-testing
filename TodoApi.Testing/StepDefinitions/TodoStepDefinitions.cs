@@ -1,45 +1,37 @@
 using Reqnroll;
+using System;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace TodoApi.Testing.StepDefinitions;
 
 [Binding]
 public sealed class TodoStepDefinitions
 {
-    // // For additional details on Reqnroll step definitions see https://go.reqnroll.net/doc-stepdef
-    //
-    // [Given("the first number is {int}")]
-    // public void GivenTheFirstNumberIs(int number)
-    // {
-    //     //TODO: implement arrange (precondition) logic
-    //     // For storing and retrieving scenario-specific data see https://go.reqnroll.net/doc-sharingdata
-    //     // To use the multiline text or the table argument of the scenario,
-    //     // additional string/DataTable parameters can be defined on the step definition
-    //     // method. 
-    //
-    //     throw new PendingStepException();
-    // }
-    //
-    // [Given("the second number is {int}")]
-    // public void GivenTheSecondNumberIs(int number)
-    // {
-    //     //TODO: implement arrange (precondition) logic
-    //
-    //     throw new PendingStepException();
-    // }
-    //
-    // [When("the two numbers are added")]
-    // public void WhenTheTwoNumbersAreAdded()
-    // {
-    //     //TODO: implement act (action) logic
-    //
-    //     throw new PendingStepException();
-    // }
-    //
-    // [Then("the result should be {int}")]
-    // public void ThenTheResultShouldBe(int result)
-    // {
-    //     //TODO: implement assert (verification) logic
-    //
-    //     throw new PendingStepException();
-    // }
+    private readonly ScenarioContext _scenarioContext;
+
+    public TodoStepDefinitions(ScenarioContext scenarioContext)
+    {
+        _scenarioContext = scenarioContext;
+    }
+    
+    [Given("the endpoint is {string}")]
+    public void GivenTheEndpointIs(string endpoint)
+    {
+        _scenarioContext.Add("endpoint", endpoint);
+    }
+        
+    [When("the endpoint is called")]
+    public void WhenItemsAreRequested()
+    {
+        using var client = new HttpClient();
+        var response = await client.GetAsync("https://api.example.com/items");
+    }
+        
+    [Then("the result is:")]
+    public void ThenTheResultIs(string multilineText)
+    {
+        _scenarioContext.Pending();
+    }
 }
